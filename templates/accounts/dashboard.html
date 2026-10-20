@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+{% block title %}Dashboard · Productivity Hub{% endblock %}
+{% block content %}
+<h1 class="mb-2">Hello, {{ user.username }}! 👋</h1>
+
+<div class="stats-grid">
+  <div class="stat-card"><div class="value">{{ tasks_todo }}</div><div class="label">Tasks To Do</div></div>
+  <div class="stat-card"><div class="value">{{ tasks_done }}</div><div class="label">Tasks Done</div></div>
+  <div class="stat-card"><div class="value">{{ active_goals }}</div><div class="label">Active Goals</div></div>
+  <div class="stat-card"><div class="value">{{ habits_today }}/{{ habits_count }}</div><div class="label">Habits Today</div></div>
+  <div class="stat-card"><div class="value">{{ notes_count }}</div><div class="label">Notes</div></div>
+  <div class="stat-card"><div class="value">${{ month_expenses|floatformat:0 }}</div><div class="label">Spent This Month</div></div>
+</div>
+
+<div class="card">
+  <div class="card-header">
+    <h2>Recent Tasks</h2>
+    <a href="{% url 'task_create' %}" class="btn btn-primary btn-sm">+ Add</a>
+  </div>
+  {% if recent_tasks %}
+  <ul class="item-list">
+    {% for t in recent_tasks %}
+    <li class="item">
+      <div class="item-body">
+        <div class="item-title">{{ t.title }}</div>
+        <div class="item-meta">
+          <span class="badge badge-{{ t.priority }}">{{ t.get_priority_display }}</span>
+          <span class="badge badge-{{ t.status }}">{{ t.get_status_display }}</span>
+        </div>
+      </div>
+    </li>
+    {% endfor %}
+  </ul>
+  {% else %}
+  <div class="empty-state"><div class="icon">✅</div><p>No tasks yet</p></div>
+  {% endif %}
+</div>
+
+<div class="card">
+  <div class="card-header">
+    <h2>Upcoming Events</h2>
+    <a href="{% url 'event_create' %}" class="btn btn-primary btn-sm">+ Add</a>
+  </div>
+  {% if upcoming_events %}
+  <ul class="item-list">
+    {% for e in upcoming_events %}
+    <li class="item">
+      <div class="item-body">
+        <div class="item-title">{{ e.title }}</div>
+        <div class="item-meta">{{ e.start|date:"M d, H:i" }} {% if e.location %}· {{ e.location }}{% endif %}</div>
+      </div>
+    </li>
+    {% endfor %}
+  </ul>
+  {% else %}
+  <div class="empty-state"><div class="icon">📅</div><p>No upcoming events</p></div>
+  {% endif %}
+</div>
+{% endblock %}

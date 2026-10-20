@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% block title %}Register · Productivity Hub{% endblock %}
+{% block content %}
+<div class="auth-wrapper">
+  <h1>⚡ Create Account</h1>
+  <form method="post">
+    {% csrf_token %}
+    {% for field in form %}
+    <div class="form-group">
+      <label>{{ field.label }}</label>
+      {{ field }}
+      {% if field.errors %}<small style="color:var(--danger)">{{ field.errors.0 }}</small>{% endif %}
+    </div>
+    {% endfor %}
+    <button type="submit" class="btn btn-primary btn-block">Register</button>
+  </form>
+  <div class="auth-links">Already have an account? <a href="{% url 'login' %}">Login</a></div>
+</div>
+<style>
+  .auth-wrapper input { width:100%; padding:10px 12px; border:1px solid var(--border); border-radius:8px; font-size:1rem; }
+</style>
+{% endblock %}

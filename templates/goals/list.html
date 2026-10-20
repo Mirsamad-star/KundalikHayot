@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% block title %}Goals · Productivity Hub{% endblock %}
+{% block content %}
+<div class="flex-between mb-2">
+  <h1>🎯 Goals</h1>
+  <a href="{% url 'goal_create' %}" class="btn btn-primary">+ New Goal</a>
+</div>
+{% if goals %}
+<ul class="item-list">
+  {% for g in goals %}
+  <li class="item">
+    <div class="item-body">
+      {% if g.image %}<img src="{{ g.image.url }}" class="img-preview" style="max-height:80px;margin-bottom:8px">{% endif %}
+      <div class="item-title">{{ g.title }}</div>
+      {% if g.description %}<p class="text-muted" style="font-size:.85rem">{{ g.description|truncatewords:15 }}</p>{% endif %}
+      <div class="progress-bar"><div class="fill" style="width:{{ g.progress }}%"></div></div>
+      <div class="item-meta mt-1">
+        <span class="badge badge-{{ g.status }}">{{ g.get_status_display }}</span>
+        <span>{{ g.progress }}%</span>
+        {% if g.target_date %}<span>🎯 {{ g.target_date }}</span>{% endif %}
+      </div>
+    </div>
+    <div class="item-actions">
+      <a href="{% url 'goal_edit' g.pk %}" class="btn btn-sm btn-outline">Edit</a>
+      <a href="{% url 'goal_delete' g.pk %}" class="btn btn-sm btn-danger">✕</a>
+    </div>
+  </li>
+  {% endfor %}
+</ul>
+{% else %}
+<div class="empty-state"><div class="icon">🎯</div><p>No goals yet</p><a href="{% url 'goal_create' %}" class="btn btn-primary mt-1">Set your first goal</a></div>
+{% endif %}
+{% endblock %}

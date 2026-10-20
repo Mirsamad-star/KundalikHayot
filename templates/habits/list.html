@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% block title %}Habits · Productivity Hub{% endblock %}
+{% block content %}
+<div class="flex-between mb-2">
+  <h1>🔥 Habits</h1>
+  <a href="{% url 'habit_create' %}" class="btn btn-primary">+ New Habit</a>
+</div>
+{% if habits %}
+<ul class="item-list">
+  {% for h in habits %}
+  <li class="item">
+    <a href="{% url 'habit_toggle' h.pk %}" class="habit-check {% if h.id in logs_today %}done{% endif %}" style="border-color:{{ h.color }}{% if h.id in logs_today %};background:{{ h.color }};color:#fff{% endif %}">
+      {% if h.id in logs_today %}✓{% else %}○{% endif %}
+    </a>
+    <div class="item-body">
+      <div class="item-title">{{ h.name }}</div>
+      {% if h.description %}<p class="text-muted" style="font-size:.85rem">{{ h.description }}</p>{% endif %}
+      <div class="item-meta"><span>{{ h.get_frequency_display }}</span> · Target: {{ h.target_count }}</div>
+    </div>
+    <div class="item-actions">
+      <a href="{% url 'habit_edit' h.pk %}" class="btn btn-sm btn-outline">Edit</a>
+      <a href="{% url 'habit_delete' h.pk %}" class="btn btn-sm btn-danger">✕</a>
+    </div>
+  </li>
+  {% endfor %}
+</ul>
+{% else %}
+<div class="empty-state"><div class="icon">🔥</div><p>No habits yet</p><a href="{% url 'habit_create' %}" class="btn btn-primary mt-1">Create first habit</a></div>
+{% endif %}
+{% endblock %}

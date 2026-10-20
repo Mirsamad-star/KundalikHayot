@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% block title %}{{ action }} Event{% endblock %}
+{% block content %}
+<div class="card" style="max-width:560px;margin:0 auto">
+  <h1 class="mb-2">{{ action }} Event</h1>
+  <form method="post">
+    {% csrf_token %}
+    <div class="form-group"><label>Title *</label><input type="text" name="title" class="form-control" value="{{ event.title|default:'' }}" required></div>
+    <div class="form-group"><label>Description</label><textarea name="description" class="form-control">{{ event.description|default:'' }}</textarea></div>
+    <div class="form-group"><label>Start *</label><input type="datetime-local" name="start" class="form-control" value="{{ event.start|date:'Y-m-d\TH:i'|default:'' }}" required></div>
+    <div class="form-group"><label>End</label><input type="datetime-local" name="end" class="form-control" value="{{ event.end|date:'Y-m-d\TH:i'|default:'' }}"></div>
+    <div class="form-group"><label><input type="checkbox" name="all_day" {% if event.all_day %}checked{% endif %}> All day</label></div>
+    <div class="form-group"><label>Location</label><input type="text" name="location" class="form-control" value="{{ event.location|default:'' }}"></div>
+    <div class="form-group"><label>Color</label><input type="color" name="color" class="form-control" value="{{ event.color|default:'#3b82f6' }}" style="height:44px"></div>
+    <div class="flex-between">
+      <a href="{% url 'event_list' %}" class="btn btn-outline">Cancel</a>
+      <button type="submit" class="btn btn-primary">Save</button>
+    </div>
+  </form>
+</div>
+{% endblock %}

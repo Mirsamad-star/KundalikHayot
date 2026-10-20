@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% block title %}Calendar · Productivity Hub{% endblock %}
+{% block content %}
+<div class="flex-between mb-2">
+  <h1>📅 Calendar</h1>
+  <a href="{% url 'event_create' %}" class="btn btn-primary">+ New Event</a>
+</div>
+{% if events %}
+<ul class="item-list">
+  {% for e in events %}
+  <li class="item" style="border-left:4px solid {{ e.color }}">
+    <div class="item-body">
+      <div class="item-title">{{ e.title }}</div>
+      {% if e.description %}<p class="text-muted" style="font-size:.85rem">{{ e.description|truncatewords:15 }}</p>{% endif %}
+      <div class="item-meta">
+        <span>🕐 {{ e.start|date:"M d, Y H:i" }}{% if e.end %} – {{ e.end|date:"H:i" }}{% endif %}</span>
+        {% if e.all_day %}<span class="badge">All day</span>{% endif %}
+        {% if e.location %}<span>📍 {{ e.location }}</span>{% endif %}
+      </div>
+    </div>
+    <div class="item-actions">
+      <a href="{% url 'event_edit' e.pk %}" class="btn btn-sm btn-outline">Edit</a>
+      <a href="{% url 'event_delete' e.pk %}" class="btn btn-sm btn-danger">✕</a>
+    </div>
+  </li>
+  {% endfor %}
+</ul>
+{% else %}
+<div class="empty-state"><div class="icon">📅</div><p>No events yet</p><a href="{% url 'event_create' %}" class="btn btn-primary mt-1">Add first event</a></div>
+{% endif %}
+{% endblock %}

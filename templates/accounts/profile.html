@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% block title %}Profile · Productivity Hub{% endblock %}
+{% block content %}
+<div class="card" style="max-width:500px;margin:0 auto">
+  <h1 class="mb-2">👤 Profile</h1>
+  {% if user.profile.avatar %}
+  <img src="{{ user.profile.avatar.url }}" alt="Avatar" class="img-preview" style="width:100px;height:100px;object-fit:cover;border-radius:50%">
+  {% endif %}
+  <p class="mt-1"><strong>{{ user.username }}</strong></p>
+  <p class="text-muted">{{ user.email|default:"No email" }}</p>
+  <form method="post" enctype="multipart/form-data" class="mt-2">
+    {% csrf_token %}
+    <div class="form-group">
+      <label>Bio</label>
+      <textarea name="bio" class="form-control">{{ user.profile.bio }}</textarea>
+    </div>
+    <div class="form-group">
+      <label>Avatar</label>
+      <input type="file" name="avatar" class="form-control" accept="image/*">
+    </div>
+    <button type="submit" class="btn btn-primary">Save Profile</button>
+  </form>
+</div>
+{% endblock %}

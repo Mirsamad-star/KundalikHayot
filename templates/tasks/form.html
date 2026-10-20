@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% block title %}{{ action }} Task · Productivity Hub{% endblock %}
+{% block content %}
+<div class="card" style="max-width:560px;margin:0 auto">
+  <h1 class="mb-2">{{ action }} Task</h1>
+  <form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    <div class="form-group"><label>Title *</label><input type="text" name="title" class="form-control" value="{{ task.title|default:'' }}" required></div>
+    <div class="form-group"><label>Description</label><textarea name="description" class="form-control">{{ task.description|default:'' }}</textarea></div>
+    <div class="form-group"><label>Priority</label>
+      <select name="priority" class="form-control">
+        <option value="low" {% if task.priority == 'low' %}selected{% endif %}>Low</option>
+        <option value="medium" {% if task.priority == 'medium' or not task %}selected{% endif %}>Medium</option>
+        <option value="high" {% if task.priority == 'high' %}selected{% endif %}>High</option>
+      </select>
+    </div>
+    <div class="form-group"><label>Status</label>
+      <select name="status" class="form-control">
+        <option value="todo" {% if task.status == 'todo' or not task %}selected{% endif %}>To Do</option>
+        <option value="in_progress" {% if task.status == 'in_progress' %}selected{% endif %}>In Progress</option>
+        <option value="done" {% if task.status == 'done' %}selected{% endif %}>Done</option>
+      </select>
+    </div>
+    <div class="form-group"><label>Due Date</label><input type="date" name="due_date" class="form-control" value="{{ task.due_date|date:'Y-m-d'|default:'' }}"></div>
+    <div class="form-group"><label>Attachment</label><input type="file" name="attachment" class="form-control">{% if task.attachment %}<small>Current: {{ task.attachment.name }}</small>{% endif %}</div>
+    <div class="flex-between">
+      <a href="{% url 'task_list' %}" class="btn btn-outline">Cancel</a>
+      <button type="submit" class="btn btn-primary">Save</button>
+    </div>
+  </form>
+</div>
+{% endblock %}

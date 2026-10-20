@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% block title %}{{ action }} Habit{% endblock %}
+{% block content %}
+<div class="card" style="max-width:560px;margin:0 auto">
+  <h1 class="mb-2">{{ action }} Habit</h1>
+  <form method="post">
+    {% csrf_token %}
+    <div class="form-group"><label>Name *</label><input type="text" name="name" class="form-control" value="{{ habit.name|default:'' }}" required></div>
+    <div class="form-group"><label>Description</label><textarea name="description" class="form-control">{{ habit.description|default:'' }}</textarea></div>
+    <div class="form-group"><label>Frequency</label>
+      <select name="frequency" class="form-control">
+        <option value="daily" {% if habit.frequency == 'daily' or not habit %}selected{% endif %}>Daily</option>
+        <option value="weekly" {% if habit.frequency == 'weekly' %}selected{% endif %}>Weekly</option>
+        <option value="monthly" {% if habit.frequency == 'monthly' %}selected{% endif %}>Monthly</option>
+      </select>
+    </div>
+    <div class="form-group"><label>Target Count</label><input type="number" name="target_count" class="form-control" min="1" value="{{ habit.target_count|default:1 }}"></div>
+    <div class="form-group"><label>Color</label><input type="color" name="color" class="form-control" value="{{ habit.color|default:'#6366f1' }}" style="height:44px"></div>
+    <div class="flex-between">
+      <a href="{% url 'habit_list' %}" class="btn btn-outline">Cancel</a>
+      <button type="submit" class="btn btn-primary">Save</button>
+    </div>
+  </form>
+</div>
+{% endblock %}

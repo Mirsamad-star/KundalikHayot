@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% block title %}Categories · Productivity Hub{% endblock %}
+{% block content %}
+<div class="flex-between mb-2">
+  <h1>📂 Categories</h1>
+  <a href="{% url 'expense_list' %}" class="btn btn-outline">← Back</a>
+</div>
+<div class="card" style="max-width:500px">
+  <h3 class="mb-2">Add Category</h3>
+  <form method="post">
+    {% csrf_token %}
+    <div class="form-group"><label>Name</label><input type="text" name="name" class="form-control" required></div>
+    <div class="form-group"><label>Icon (emoji)</label><input type="text" name="icon" class="form-control" value="💰"></div>
+    <div class="form-group"><label>Color</label><input type="color" name="color" class="form-control" value="#10b981" style="height:44px"></div>
+    <button type="submit" class="btn btn-primary">Add</button>
+  </form>
+</div>
+{% if categories %}
+<ul class="item-list mt-2">
+  {% for c in categories %}
+  <li class="item">
+    <div class="item-body">
+      <div class="item-title">{{ c.icon }} {{ c.name }}</div>
+    </div>
+  </li>
+  {% endfor %}
+</ul>
+{% endif %}
+{% endblock %}

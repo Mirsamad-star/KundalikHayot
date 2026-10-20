@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% block title %}{{ action }} Note{% endblock %}
+{% block content %}
+<div class="card" style="max-width:560px;margin:0 auto">
+  <h1 class="mb-2">{{ action }} Note</h1>
+  <form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    <div class="form-group"><label>Title *</label><input type="text" name="title" class="form-control" value="{{ note.title|default:'' }}" required></div>
+    <div class="form-group"><label>Content</label><textarea name="content" class="form-control" rows="8">{{ note.content|default:'' }}</textarea></div>
+    <div class="form-group"><label><input type="checkbox" name="is_pinned" {% if note.is_pinned %}checked{% endif %}> Pin this note</label></div>
+    <div class="form-group"><label>Color</label><input type="color" name="color" class="form-control" value="{{ note.color|default:'#fef3c7' }}" style="height:44px"></div>
+    <div class="form-group"><label>Attachment</label><input type="file" name="attachment" class="form-control"></div>
+    <div class="flex-between">
+      <a href="{% url 'note_list' %}" class="btn btn-outline">Cancel</a>
+      <button type="submit" class="btn btn-primary">Save</button>
+    </div>
+  </form>
+</div>
+{% endblock %}

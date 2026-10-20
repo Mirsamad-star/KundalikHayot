@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+{% block title %}Expenses · Productivity Hub{% endblock %}
+{% block content %}
+<div class="flex-between mb-2">
+  <h1>💰 Expenses</h1>
+  <div style="display:flex;gap:8px">
+    <a href="{% url 'category_manage' %}" class="btn btn-outline btn-sm">Categories</a>
+    <a href="{% url 'expense_create' %}" class="btn btn-primary">+ Add</a>
+  </div>
+</div>
+
+<div class="summary-row">
+  <div class="summary-box income"><div class="amount">${{ total_income }}</div><div class="label">Income</div></div>
+  <div class="summary-box expense"><div class="amount">${{ total_expense }}</div><div class="label">Expenses</div></div>
+  <div class="summary-box balance"><div class="amount">${{ balance }}</div><div class="label">Balance</div></div>
+</div>
+
+<div class="filters">
+  <a href="{% url 'expense_list' %}" class="{% if not type_filter %}active{% endif %}">All</a>
+  <a href="?type=expense" class="{% if type_filter == 'expense' %}active{% endif %}">Expenses</a>
+  <a href="?type=income" class="{% if type_filter == 'income' %}active{% endif %}">Income</a>
+</div>
+
+{% if expenses %}
+<ul class="item-list">
+  {% for e in expenses %}
+  <li class="item">
+    <div class="item-body">
+      <div class="item-title">{{ e.title }} {% if e.category %}<small class="text-muted">{{ e.category.icon }} {{ e.category.name }}</small>{% endif %}</div>
+      <div class="item-meta">
+        <span style="font-weight:600;color:{% if e.type == 'income' %}var(--success){% else %}var(--danger){% endif %}">
+          {% if e.type == 'income' %}+{% else %}-{% endif %}${{ e.amount }}
+        </span>
+        <span>{{ e.date }}</span>
+      </div>
+    </div>
+    <div class="item-actions">
+      <a href="{% url 'expense_edit' e.pk %}" class="btn btn-sm btn-outline">Edit</a>
+      <a href="{% url 'expense_delete' e.pk %}" class="btn btn-sm btn-danger">✕</a>
+    </div>
+  </li>
+  {% endfor %}
+</ul>
+{% else %}
+<div class="empty-state"><div class="icon">💰</div><p>No records yet</p><a href="{% url 'expense_create' %}" class="btn btn-primary mt-1">Add first record</a></div>
+{% endif %}
+{% endblock %}

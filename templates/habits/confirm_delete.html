@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% block title %}Delete Habit{% endblock %}
+{% block content %}
+<div class="card" style="max-width:400px;margin:40px auto;text-align:center">
+  <h2>Delete Habit?</h2>
+  <p class="mt-1">Delete <strong>{{ habit.name }}</strong>?</p>
+  <form method="post" class="mt-2">
+    {% csrf_token %}
+    <div class="flex-between" style="justify-content:center;gap:12px">
+      <a href="{% url 'habit_list' %}" class="btn btn-outline">Cancel</a>
+      <button type="submit" class="btn btn-danger">Delete</button>
+    </div>
+  </form>
+</div>
+{% endblock %}
